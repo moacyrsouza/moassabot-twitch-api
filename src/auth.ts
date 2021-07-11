@@ -16,43 +16,41 @@ API.interceptors.response.use(
   }
 );
 
-export const getAccessToken = async ({
-  code,
-  redirect_uri,
-}: {
-  code: string;
-  redirect_uri: string;
-}): Promise<ITwitchToken> => {
-  try {
-    const qs = new URLSearchParams({
-      client_id: process.env.TWITCH_CLIENT_ID,
-      client_secret: process.env.TWITCH_CLIENT_SECRET,
-      code: code,
-      grant_type: 'authorization_code',
-      redirect_uri,
-    });
+export const getAccessToken = ({ code, redirect_uri }: { code: string; redirect_uri: string }): Promise<ITwitchToken> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const qs = new URLSearchParams({
+        client_id: process.env.TWITCH_CLIENT_ID,
+        client_secret: process.env.TWITCH_CLIENT_SECRET,
+        code: code,
+        grant_type: 'authorization_code',
+        redirect_uri,
+      });
 
-    const response: ITwitchToken = await API.post(`/token?${qs}`);
-    return response;
-  } catch (err) {
-    throw err;
-  }
+      const response: ITwitchToken = await API.post(`/token?${qs}`);
+      resolve(response);
+    } catch (err) {
+      reject(err);
+    }
+  });
 };
 
-export const refreshAccessToken = async (refresh_token: string): Promise<ITwitchToken> => {
-  try {
-    const qs = new URLSearchParams({
-      grant_type: 'refresh_token',
-      refresh_token,
-      client_id: process.env.TWITCH_CLIENT_ID,
-      client_secret: process.env.TWITCH_CLIENT_SECRET,
-    });
+export const refreshAccessToken = (refresh_token: string): Promise<ITwitchToken> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const qs = new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token,
+        client_id: process.env.TWITCH_CLIENT_ID,
+        client_secret: process.env.TWITCH_CLIENT_SECRET,
+      });
 
-    const response: ITwitchToken = await API.post(`/token?${qs}`);
-    return response;
-  } catch (err) {
-    throw err;
-  }
+      const response: ITwitchToken = await API.post(`/token?${qs}`);
+      resolve(response);
+    } catch (err) {
+      reject(err);
+    }
+  });
 };
 
 export default API;

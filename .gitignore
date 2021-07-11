@@ -1,0 +1,13 @@
+node_modules
+dist
+
+.env
+
+package-lock.json
+yarn.lock
+yarn-error.log
+
+.eslintrc
+.prettierrc
+environment.d.ts
+nodemon.json

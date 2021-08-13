@@ -1,15 +1,16 @@
 {
   "name": "@moassabot/twitchapi",
   "version": "1.0.0",
-  "description": "Moassabot Twitch API",
+  "description": "Moassabot Twitch API package",
   "main": "src/index.js",
   "types": "src/index.d.ts",
-  "repository": "https://github.com/moacyrsouza/moassabot-twitch-api",
+  "repository": "https://github.com/moacyrsouza/moassabot-twitchapi-dist.git",
   "author": "Moacyr Souza",
   "license": "MIT",
   "scripts": {
-    "build": "rimraf ./dist && tsc && copyfiles package.json README.md dist/",
-    "start": "node src/index.js"
+    "cleanup": "rimraf ./dist/src && rimraf ./dist/package.json && rimraf ./dist/README.md",
+    "copy": "copyfiles package.json README.md dist/",
+    "build": "yarn cleanup ./dist && tsc && yarn copy"
   },
   "dependencies": {
     "axios": "^0.21.1",

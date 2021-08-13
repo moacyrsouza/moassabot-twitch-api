@@ -11,3 +11,5 @@ yarn-error.log
 .prettierrc
 environment.d.ts
 nodemon.json
+
+test-package

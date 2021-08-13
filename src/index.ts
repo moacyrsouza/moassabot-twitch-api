@@ -1,4 +1,4 @@
-export { getAccessToken, refreshAccessToken } from './src/auth';
+export { getAccessToken, refreshAccessToken } from './auth';
 export {
   getUser,
   getUsers,
@@ -9,9 +9,9 @@ export {
   getSubscriptions,
   setTitle,
   setGame,
-} from './src/helix';
+} from './helix';
 
-import Auth from './src/auth';
-import Helix from './src/helix';
+import Auth from './auth';
+import Helix from './helix';
 
 export default { Auth, Helix };

@@ -8,9 +8,9 @@
   "author": "Moacyr Souza",
   "license": "MIT",
   "scripts": {
-    "cleanup": "rimraf ./dist/src && rimraf ./dist/package.json && rimraf ./dist/README.md",
-    "copy": "copyfiles package.json README.md dist/",
-    "build": "yarn cleanup ./dist && tsc && yarn copy"
+    "cleanup": "rimraf ../dist/twitchapi/src && rimraf ../dist/twitchapi/package.json && rimraf ../dist/twitchapi/README.md",
+    "copy": "copyfiles package.json README.md ../dist/twitchapi",
+    "build": "yarn cleanup ../dist/twitchapi && tsc && yarn copy"
   },
   "dependencies": {
     "axios": "^0.21.1",

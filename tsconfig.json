@@ -6,7 +6,7 @@
     "lib": ["es6"],
     "declaration": true,
     "allowJs": true,
-    "outDir": "dist",
+    "outDir": "../dist/twitchapi",
     "rootDir": "./",
     "strict": true,
     "noImplicitAny": true,

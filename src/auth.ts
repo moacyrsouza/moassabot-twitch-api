@@ -53,4 +53,22 @@ export const refreshAccessToken = (refresh_token: string): Promise<ITwitchToken>
   });
 };
 
+export const getAppAccessToken = (scopes: string): Promise<ITwitchToken> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const qs = new URLSearchParams({
+        client_id: process.env.TWITCH_CLIENT_ID,
+        client_secret: process.env.TWITCH_CLIENT_SECRET,
+        scope: scopes,
+        grant_type: 'client_credentials',
+      });
+
+      const response: ITwitchToken = await API.post(`/token?${qs}`);
+      resolve(response);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
 export default API;

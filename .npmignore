@@ -1,5 +1,5 @@
 node_modules
-dist
+src
 
 .env
 
@@ -12,3 +12,5 @@ yarn-error.log
 nodemon.json
 
 test-package
+
+tsconfig.json

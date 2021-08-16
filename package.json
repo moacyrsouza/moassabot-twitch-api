@@ -1,16 +1,18 @@
 {
   "name": "@moassabot/twitchapi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Moassabot Twitch API package",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
-  "repository": "https://github.com/moacyrsouza/moassabot-twitchapi-dist.git",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "https://github.com/moacyrsouza/moassabot-twitchapi.git",
   "author": "Moacyr Souza",
   "license": "MIT",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
-    "cleanup": "rimraf ../dist/twitchapi/src && rimraf ../dist/twitchapi/package.json && rimraf ../dist/twitchapi/README.md",
-    "copy": "copyfiles package.json README.md ../dist/twitchapi",
-    "build": "yarn cleanup ../dist/twitchapi && tsc && yarn copy"
+    "prepublish": "yarn build",
+    "build": "rimraf ./dist && tsc"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -20,7 +22,6 @@
     "@types/node": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
-    "copyfiles": "^2.4.1",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",

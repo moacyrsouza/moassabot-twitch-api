@@ -230,7 +230,7 @@ export const getSubscriptions = async ({
       let exit = false;
 
       while (!exit) {
-        const response: ITwitchSubscriptionsResponse = await API.get(`/users/follows?${qs}`, {
+        const response: ITwitchSubscriptionsResponse = await API.get(`/subscriptions?${qs}`, {
           headers: {
             Authorization: `Bearer ${twitch_access_token}`,
           },
@@ -292,24 +292,30 @@ export const setGame = async ({
 }): Promise<void> => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response: ITwitchGamesResponse = await API.get(`/games?name=${name}`, {
-        headers: {
-          Authorization: `Bearer ${twitch_access_token}`,
-        },
-      });
+      let game_id = '';
 
-      if (response.data.length === 0) {
-        const error = new Error(
-          `Não foi possível atualizar a categoria da transmissão para ${name}. Categoria não encontrada.`
-        );
-        // error.reply = true;
-        throw error;
+      if (name.length === 0) {
+        const response: ITwitchGamesResponse = await API.get(`/games?name=${name}`, {
+          headers: {
+            Authorization: `Bearer ${twitch_access_token}`,
+          },
+        });
+
+        if (response.data.length === 0) {
+          const error = new Error(
+            `Não foi possível atualizar a categoria da transmissão para ${name}. Categoria não encontrada.`
+          );
+          // error.reply = true;
+          throw error;
+        }
+
+        game_id = response.data[0].id;
       }
 
       await API.patch(
         `/channels?broadcaster_id=${broadcaster_id}`,
         {
-          game_id: response.data[0].id,
+          game_id,
         },
         {
           headers: {

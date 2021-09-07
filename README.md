@@ -10,35 +10,40 @@ Install the package with:
 
     npm install @moassabot/twitchapi --save
 
-Import the methods you want to use:
+Import the TwitchAPI class:
 
-    const { getAccessToken } = require('@moassabot/twitchapi');
-
-    OR
-
-    import { getAccessToken } from '@moassabot/twitchapi';
-
-If you need to access the axios instances for the APIs, import with:
-
-    const { default: API } = require('@moassabot/twitchapi');
+    const TwitchAPI = require('@moassabot/twitchapi');
 
     OR
 
-    import API from '@moassabot/twitchapi';
+    import TwitchAPI from '@moassabot/twitchapi';
 
-the API object contains the Helix API and the Auth API axios instances
+Create a new instance:
 
-## Requirements
+    const client_id = process.env.TWITCH_CLIENT_ID;
+    const client_secret = process.env.TWITCH_CLIENT_SECRET;
+    const api = new TwitchAPI(client_id, client_secret);
 
-You must set two environment variables in your .env file
+## Properties Reference
 
-    TWITCH_CLIENT_ID
-    TWITCH_CLIENT_SECRET
+The only properties are the Axios Instances for the two APIs: auth and helix. They might be used in order to access the base URLs or to make requests not provided in the TwitchAPI class methods.
 
-First you must register your app on Twitch Developers.</br>
-Then both values can be found in your <a href="https://dev.twitch.tv/console">Twitch Dev Console</a>.
+- <a href="#auth">\_auth</a>
+- <a href="#helix">\_helix</a>
 
-## Reference
+### Auth
+
+Axios instance for the OAuth Twitch API used in the <a href="#get-access-token">getAccessToken</a>, <a href="#refresh-access-token">refreshAccessToken</a>, <a href="#get-app-access-token">getAppAccessToken</a> methods. It is set in the TwitchAPI constructor with the baseURL _https://id.twitch.tv/oauth2_.
+
+    const auth = api._auth;
+
+### Helix
+
+Axios instance for the Helix Twitch API used in the remaining methods. It is set in the TwitchAPI constructor with the baseURL _https://api.twitch.tv/helix_.
+
+    const helix = api._helix;
+
+## Methods Reference
 
 - <a href="#get-access-token">getAccessToken</a>
 - <a href="#refresh-access-token">refreshAccessToken</a>
@@ -57,7 +62,7 @@ Then both values can be found in your <a href="https://dev.twitch.tv/console">Tw
 
 Used in <a href="https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-authorization-code-flow">OAuth authorization code</a> flow callback to obtain a User Access Token
 
-    const response = await getAccessToken({ code, redirect_uri })
+    const response = await api.getAccessToken({ code, redirect_uri })
 
 #### Parameters
 
@@ -78,7 +83,7 @@ Used in <a href="https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/
 
 Used to obtain a new Access Token with a Refresh Token
 
-    const response = await refreshAccessToken(refresh_token)
+    const response = await api.refreshAccessToken(refresh_token)
 
 #### Parameters
 
@@ -97,7 +102,7 @@ Used to obtain a new Access Token with a Refresh Token
 
 Used in <a href="https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-client-credentials-flow">OAuth client credentials flow</a> to obtain an App Access Token
 
-    const response = await getAppAccessToken("chat:edit chat:read")
+    const response = await api.getAppAccessToken("chat:edit chat:read")
 
 #### Parameters
 
@@ -117,7 +122,7 @@ Used in <a href="https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/
 Fetch user information with a valid User Access Token.</br>
 Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-users">original reference</a> for more information.
 
-    const user = await getUser({ twitch_access_token })
+    const user = await api.getUser({ twitch_access_token })
 
 #### Parameters
 
@@ -144,7 +149,7 @@ Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-users">origi
 Fetch users information with a list of user IDs.</br>
 Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-users">original reference</a> for more information.
 
-    const users = await getUsers({ ids, twitch_access_token })
+    const users = await api.getUsers({ ids, twitch_access_token })
 
 #### Parameters
 
@@ -172,7 +177,7 @@ Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-users">origi
 Fetch information of one stream.</br>
 Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-streams">original reference</a> for more information.
 
-    const stream = await getStream({ id, twitch_access_token })
+    const stream = await api.getStream({ id, twitch_access_token })
 
 #### Parameters
 
@@ -204,7 +209,7 @@ Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-streams">ori
 Fetch information of more than one stream.</br>
 Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-streams">original reference</a> for more information.
 
-    const streams = await getStreams({ ids, twitch_access_token })
+    const streams = await api.getStreams({ ids, twitch_access_token })
 
 #### Parameters
 
@@ -235,7 +240,7 @@ Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-streams">ori
 Fetch a channel's list of editors.</br>
 Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-channel-editors">original reference</a> for more information.
 
-    const editors = await getEditors({ id, twitch_access_token })
+    const editors = await api.getEditors({ id, twitch_access_token })
 
 #### Parameters
 
@@ -255,7 +260,7 @@ Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-channel-edit
 Fetch follows from User with ID user_id / to Channel with channel_id.</br>
 Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-users-follows">original reference</a> for more information.
 
-    const follows = await getFollows({ twitch_access_token, channel_id, user_id })
+    const follows = await api.getFollows({ twitch_access_token, channel_id, user_id })
 
 #### Parameters
 
@@ -282,7 +287,7 @@ At least one of channel_id and user_id paramaters must be passed. If both are de
 Fetch a Channel's Subscriptions.</br>
 Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions">original reference</a> for more information.
 
-    const subs = await getSubscriptions({ id, twitch_access_token })
+    const subs = await api.getSubscriptions({ id, twitch_access_token })
 
 #### Parameters
 
@@ -312,7 +317,7 @@ Check out the <a href="https://dev.twitch.tv/docs/api/reference#get-broadcaster-
 Modifies a Broadcast's Title.</br>
 Check out the <a href="https://dev.twitch.tv/docs/api/reference#modify-channel-information">original reference</a> for more information.
 
-    await setTitle({ title, broadcaster_id, twitch_access_token })
+    await api.setTitle({ title, broadcaster_id, twitch_access_token })
 
 #### Parameters
 
@@ -330,7 +335,7 @@ Check out the <a href="https://dev.twitch.tv/docs/api/reference#modify-channel-i
 Modifies a Broadcast's Game.</br>
 Check out the <a href="https://dev.twitch.tv/docs/api/reference#modify-channel-information">original reference</a> for more information.
 
-    await setGame({ game, broadcaster_id, twitch_access_token })
+    await api.setGame({ game, broadcaster_id, twitch_access_token })
 
 #### Parameters
 
